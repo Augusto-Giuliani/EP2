@@ -21,7 +21,7 @@ while GAME:
     n+=1 # --> Número total de participantes no jogo, incluindo o usuário (humano)
 # Criando a lista de peças e fazendo seu devido embaralhamento
     l_pieces = cria_pecas()
-# Distribuindo 7 peças para cada jogador, criando monte e mesa (retorna dicionário com tudo isso).
+# Distribuindo 7 peças para cada jogador, criando monte e mesa (retorna dicionário com tudo isso)
     d_game = inicia_jogo(n,l_pieces)
 # Quebrando o dicionário em diferentes variáveis
     players = d_game['jogadores'] # --> NOTE: O usuário é o jogador "0" desse dicionário
@@ -32,15 +32,49 @@ while GAME:
     # INICIANDO A RODADA - CRIANDO OUTRO LOOP
     ROUND = True
     while ROUND:
-    # Mostrando as peças sobre a mesa e as peças do jogador
-        
+    # Mostrando as peças sobre a mesa, as peças do usuário e a quantidade de peças do(s) outro(s) jogador(es)
+        print(table)
+        print('Suas peças:{}.'.format(players[0]))
+        alert = list() # --> lista que contém jogadores com apenas uma peça
+        for i in range(1,n+1):
+            if len(players[i])==1:
+                alert.append(i+1)
+            print('Quantidade de peças do jogador {}: {}.'.format(i+1,len(players[i])))
+    # Dá um aviso se algum jogador só estiver com uma peça
+        if alert!=list():
+            for i in alert:
+                print('CUIDADO! O jogador {} está com apenas uma peça.'.format(i))
     # Verificando as peças possíveis (que podem ser colocadas na mesa) do jogador
         possibilities = posicoes_possiveis(table,players[player])
-    # Se o jogador não tiver peças "possíveis", ele pega do monte até ter uma peça possível.
-        if possibilities == list() and storage!=list():
+    # ----> SE NÃO HOUVER PEÇAS POSSÍVEIS
+    # Se o jogador não tiver peças "possíveis", ele pega do monte até ter uma peça possível
+        while possibilities == list() and storage!=list():
         # Se o jogador for o usuário
             if player==0:
-                sad_message = input('Eita! Você vai ter que pegar uma peça do monte. Aperte Enter para apanhar uma peça do monte.')
+                input('Eita! Você vai ter que pegar uma peça do monte. Aperte a tecla "Enter" para apanhar uma peça do monte.')
+        # Se o jogador não for o usuário
+            elif player!=0:
+                print('O jogador {} se deu mal, vai ter que pegar do monte.'.format(player+1))
+            players[player].append(storage[0])
+            del storage[0] # --> apaga essa peça obtida do monte no monte
+            possibilities = posicoes_possiveis(table,players[player]) # --> novamente verifica as peças possíveis
+    # Se o jogador não tiver peças "possíveis" e não tiver monte, é a vez do próximo jogador
+        if possibilities == list() and storage == list():
+            if player==0:
+                input('Uma pena. Como não há mais peças no monte, vamos ter que pular a sua vez. Aperte a tecla "Enter" para continuar o jogo.')
+            elif player!=0:
+                print('Como não tem monte, vamos pular a vez do jogador {}.'.format(player+1))
+            player+=1
+    # ----> SE HOUVER PEÇAS POSSÍVEIS
+    # Adicionando a peça na mesa
+    # Se o jogador for o usuário, ele escolhe qual peça colocar
+        if player==0:
+        
+        
+
+            
+
+
 
     
          
