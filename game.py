@@ -5,3 +5,6 @@ from mandatory_functions import cria_pecas,inicia_jogo,verifica_ganhador,soma_pe
 
 # Introdução
 print('INSPER - Curso de Engenharia - 1° Semestre - 2021.2\nDisciplina: Design de Software\nProfessor: Humberto Sandmann\nAluno: Augusto Giuliani\nAtividade: Exercício Programa 2 - Jogo de Dominó')
+
+# Mensagem inicial
+print('\nBem-vindo(a) ao meu jogo de dominó!\nBoa sorte!')
