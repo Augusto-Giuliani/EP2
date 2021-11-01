@@ -6,21 +6,20 @@ from mandatory_functions import cria_pecas,inicia_jogo,verifica_ganhador,soma_pe
 import random as r
 
 # Introdução
-print('INSPER - Curso de Engenharia - 1° Semestre - 2021.2\nDisciplina: Design de Software\nProfessor: Humberto Sandmann\nAluno: Augusto Giuliani\nAtividade: Exercício Programa 2 - Jogo de Dominó')
+print('\nINSPER - Curso de Engenharia - 1° Semestre - 2021.2\nDisciplina: Design de Software\nProfessor: Humberto Sandmann\nAluno: Augusto Giuliani\nAtividade: Exercício Programa 2 - Jogo de Dominó')
 
 # Mensagem inicial e escolha de nome
-username = input('\nBem-vindo(a) ao meu jogo de dominó. Primeiramente, escolha um nome para o seu usuário:')
+username = input('\nBem-vindo(a) ao meu jogo de dominó.\n\nShall we begin?\n\nPrimeiramente, escolha um nome para o seu usuário:')
 print('\nBoa sorte {}!'.format(username))
 
 # INICIANDO O JOGO - CRIANDO O LOOP GAME --> cada loop é um jogo diferente
 GAME = True # ---> estado do jogo
 while GAME:
 # Escolhendo o número de jogadores
-    n = input('Quer jogar com quantos jogadores {}? 1,2 ou 3?'.format(username))
+    n = input('\nQuer jogar com quantos jogadores {}? 1, 2 ou 3?'.format(username))
+    while n!='1' and n!='2' and n!='3': # Se o usuário der uma resposta inválida
+        n = input('\nRESPOSTA INVÁLIDA! PRESTA ATENÇÃO {}!\nQuer jogar com quantos jogadores? 1,2 ou 3?'.format(username.upper()))
     n = int(n)
-    while n!=1 and n!=2 and n!=3: # Se o usuário der uma resposta inválida
-        n = input('RESPOSTA INVÁLIDA! PRESTA ATENÇÃO {}! Quer jogar com quantos jogadores? 1,2 ou 3?'.format(username))
-        n = int(n)
     n+=1 # --> Número total de participantes no jogo, incluindo o usuário (humano)
 # Criando a lista de peças e fazendo seu devido embaralhamento
     l_pieces = cria_pecas()
@@ -42,18 +41,23 @@ while GAME:
         # INICIANDO A VEZ - CRIANDO O LOOP TURN --> cada loop é a vez de um jogador
         TURN = True
         while TURN:
-        # Mostrando as peças sobre a mesa, as peças do usuário e a quantidade de peças do(s) outro(s) jogador(es)
-            print(table)
-            print('Suas peças:{}.'.format(players[0]))
+        # Mostrando as peças sobre a mesa, as peças do usuário, a quantidade de peças no monte e a quantidade de peças do(s) outro(s) jogador(es)
+            print('\nMESA:\n{}'.format(table))
+            print('\nSuas peças:')
+            for piece in players[0]:
+                print(piece)
+            if len(players[0])<=2: # --> mensagem se estiver faltando poucas peças para ganhar o jogo
+                print('Falta pouco {}! Não desista...'.format(username))
             alert = list() # --> lista que contém jogadores com apenas uma peça
-            for i in range(1,n+1):
-                if len(players[i])==1:
+            print('\nQuantidade de peças...\nno MONTE: {}'.format(len(storage)))
+            for i in range(1,n):
+                if len(players[i])<=2:
                     alert.append(i+1)
-                print('Quantidade de peças do jogador {}: {}.'.format(i+1,len(players[i])))
+                print('do JOGADOR {}: {}'.format(i+1,len(players[i])))
         # Dá um aviso se algum jogador só estiver com uma peça
             if alert!=list():
                 for i in alert:
-                    print('CUIDADO {}! O jogador {} está com apenas uma peça.'.format(username,i))
+                    print('CUIDADO {}! O JOGADOR {} está com menos de 3 peças.'.format(username.upper(),i))
         # Verificando as peças possíveis (que podem ser colocadas na mesa) do jogador
             possibilities = posicoes_possiveis(table,players[player])
         # ----> SE NÃO HOUVER PEÇAS POSSÍVEIS
@@ -61,19 +65,19 @@ while GAME:
             while possibilities == list() and storage!=list():
             # Se o jogador for o usuário
                 if player==0:
-                    input('Eita! Você vai ter que pegar uma peça do monte. Aperte a tecla "Enter" para apanhar uma peça do monte.')
+                    input('\nEita! Você vai ter que pegar uma peça do monte.\nAperte a tecla "Enter" para apanhar uma peça do monte.')
             # Se o jogador não for o usuário
                 elif player!=0:
-                    print('O jogador {} se deu mal, vai ter que pegar do monte.'.format(player+1))
+                    print('\nO JOGADOR {} se deu mal, vai ter que pegar do monte.'.format(player+1))
                 players[player].append(storage[0])
                 del storage[0] # --> apaga essa peça obtida do monte no monte
                 possibilities = posicoes_possiveis(table,players[player]) # --> novamente verifica as peças possíveis
         # Se o jogador não tiver peças "possíveis" e não tiver monte, é a vez do próximo jogador
             if possibilities == list() and storage == list():
                 if player==0:
-                    input('Uma pena {}. Como não há mais peças no monte, vamos ter que pular a sua vez. Aperte a tecla "Enter" para continuar o jogo.'.format(username))
+                    input('\nUma pena {}. Como não há mais peças no monte, vamos ter que pular a sua vez.\nAperte a tecla "Enter" para continuar o jogo.'.format(username))
                 elif player!=0:
-                    print('Como não tem monte, vamos pular a vez do jogador {}.'.format(player+1))
+                    print('\nComo não tem monte, vamos pular a vez do JOGADOR {}.'.format(player+1))
                 player+=1
                 skips+=1
         # ----> SE HOUVER PEÇAS POSSÍVEIS
@@ -82,23 +86,22 @@ while GAME:
             # Se o jogador for o usuário, ele escolhe qual peça colocar
                 if player==0:
                 # Mostrando para o usuário as posições de cada peça que ele pode usar
-                    print('Sua vez {}! Essas são as peças possíveis:'.format(username))
+                    print('\nSua vez {}! Essas são as peças possíveis:'.format(username))
                     for i in possibilities:
                         print('{} --> {}'.format(i,players[player][i]))
-                    chosen_piece = input('Selecione uma das posições possíveis:')
+                    chosen_piece = input('\nSelecione uma das posições possíveis:')
+                    while not chosen_piece.isdigit() or int(chosen_piece) not in possibilities: # Se o usuário der uma resposta inválida
+                        chosen_piece = input('\nRESPOSTA INVÁLIDA! PRESTA ATENÇÃO {}!\nSelecione uma das posições possíveis:'.format(username.upper()))
                     chosen_piece = int(chosen_piece)
-                    while chosen_piece not in possibilities: # Se o usuário der uma resposta inválida
-                        chosen_piece = input('RESPOSTA INVÁLIDA! PRESTA ATENÇÃO {}! Selecione uma das posições possíveis:'.format(username))
-                        chosen_piece = int(chosen_piece)
-                    del players[player][chosen_piece] # --> apaga essa peça da lista de peças que o jogador possui
                 # Atualizando a mesa com a peça escolhida
                     table = adiciona_na_mesa(players[player][chosen_piece],table)
+                    del players[player][chosen_piece] # --> apaga essa peça da lista de peças que o jogador possui
             # Se o jogador não for o usuário
                 if player!=0:
-                    print('É a vez do jogador {}.'.format(player+1))
+                    print('\nÉ a vez do JOGADOR {}.'.format(player+1))
                     chosen_piece = r.choice(possibilities)
-                    del players[player][chosen_piece] # --> apaga essa peça da lista de peças que o jogador possui
                     table = adiciona_na_mesa(players[player][chosen_piece],table)
+                    del players[player][chosen_piece] # --> apaga essa peça da lista de peças que o jogador possui
             # Após um jogador ter adicionado uma peça na mesa, verifica-se se há um ganhador
                 winner = verifica_ganhador(players)
                 if winner==-1: # --> jogo continua e passa a vez para o próximo jogador
@@ -136,44 +139,25 @@ while GAME:
                     L_winners = list()
                     for p in l_winners:
                         L_winners.append(p+1)
-                    print('EMPATE! E você é um dos vencedores, junto com o(s) jogador(es) {}! Parabéns! Mas será se dá para fazer melhor {}?'.format(L_winners,username))
+                    print('\nEMPATE! E você é um dos vencedores, junto com o(s) jogador(es) {}! Parabéns!\nMas será se dá para fazer melhor {}?'.format(L_winners,username))
                 else:
                     L_winners = list()
                     for p in l_winners:
                         L_winners.append(p+1)
-                    print('EMPATE! Mas infelizmente você não é um dos vencedores. Os jogadores vencedores são {}. Será se é possível fazer melhor {}?'.format(L_winners,username))
+                    print('\nEMPATE! Mas infelizmente você não é um dos vencedores. Os jogadores vencedores são {}.\nSerá se é possível fazer melhor {}?'.format(L_winners,username))
     # Mensagem de vitória/perda
     if winner==0 and not DRAW:
-        print('WINNER WINNER CHICKEN DINNER! Parabéns {}! Você é o vencedor!'.format(username))
+        print('\nWINNER WINNER CHICKEN DINNER! Parabéns {}! Você é o vencedor!'.format(username))
     if winner!=0 and not DRAW:
-        print('Vish {}... O jogador {} ganhou. Talvez na próxima você ganhe.'.format(username,player+1))
+        print('\nVish {}... O JOGADOR {} ganhou. Talvez na próxima você ganhe.'.format(username,player+1))
     # Pergunta se o usuário quer jogar novamente
-    again = input('Vamos jogar de novo {}? Digite S para SIM e N para NÃO:'.format(username))
+    again = input('\nVamos jogar de novo {}? Digite S para SIM e N para NÃO:'.format(username))
     while again!='S' and again!='N': # Se o usuário der uma resposta inválida
-        chosen_piece = input('RESPOSTA INVÁLIDA! PRESTA ATENÇÃO {}! Digite S para SIM e N para NÃO:'.format(username))
+        again = input('\nRESPOSTA INVÁLIDA! PRESTA ATENÇÃO {}!\nDigite S para SIM e N para NÃO:'.format(username.upper()))
     # Se a resposta for não, termina com o loop central
     if again=='N':
         GAME = False 
     if again=='S':
-        print('Excelente {}! Vamos de novo...'.format(username))
+        print('\nExcelente {}! Vamos de novo...'.format(username))
 # GoodBye
-print('Sem problemas {}. Nos vemos outro dia.'.format(username))
-    
-
-
-    
-
-
-
-
-    
-        
-        
-
-            
-
-
-
-    
-         
-
+print('\nSem problemas. Nos vemos outro dia {}.'.format(username))
