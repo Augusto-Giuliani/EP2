@@ -31,6 +31,7 @@ while GAME:
     storage = d_game['monte']
 # Um dos jogadores é aleatoriamente escolhido para iniciar o jogo
     player = r.randint(0,n-1)
+    print('\nIniciando...')
     # INICIANDO A RODADA - CRIANDO O LOOP ROUND --> cada loop é uma rodada diferente 
     ROUND = True
     while ROUND:
@@ -48,13 +49,13 @@ while GAME:
                 print(piece)
             if len(players[0])<=2: # --> mensagem se estiver faltando poucas peças para ganhar o jogo
                 print('Falta pouco {}! Não desista...'.format(username))
-            alert = list() # --> lista que contém jogadores com apenas uma peça
+            alert = list() # --> lista que contém jogadores com menos de 3 peças
             print('\nQuantidade de peças...\nno MONTE: {}'.format(len(storage)))
             for i in range(1,n):
                 if len(players[i])<=2:
                     alert.append(i+1)
                 print('do JOGADOR {}: {}'.format(i+1,len(players[i])))
-        # Dá um aviso se algum jogador só estiver com uma peça
+        # Dá um aviso se algum jogador estiver com menos de 3 peças
             if alert!=list():
                 for i in alert:
                     print('CUIDADO {}! O JOGADOR {} está com menos de 3 peças.'.format(username.upper(),i))
@@ -147,9 +148,9 @@ while GAME:
                     print('\nEMPATE! Mas infelizmente você não é um dos vencedores. Os jogadores vencedores são {}.\nSerá se é possível fazer melhor {}?'.format(L_winners,username))
     # Mensagem de vitória/perda
     if winner==0 and not DRAW:
-        print('\nWINNER WINNER CHICKEN DINNER! Parabéns {}! Você é o vencedor!'.format(username))
+        print('\nWINNER WINNER CHICKEN DINNER! Parabéns {}! Você é o vencedor!'.format(username)) 
     if winner!=0 and not DRAW:
-        print('\nVish {}... O JOGADOR {} ganhou. Talvez na próxima você ganhe.'.format(username,player+1))
+        print('\nVish {}... O JOGADOR {} ganhou. Talvez na próxima você ganhe.'.format(username,winner+1))
     # Pergunta se o usuário quer jogar novamente
     again = input('\nVamos jogar de novo {}? Digite S para SIM e N para NÃO:'.format(username))
     while again!='S' and again!='N': # Se o usuário der uma resposta inválida
