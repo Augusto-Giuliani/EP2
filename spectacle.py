@@ -1,7 +1,7 @@
 # Arquivo com a função que insere imagens
 import climage
 def IMAGE(situation):
-    if situation == 'alerta':
+    if situation == 'alert':
         return climage.convert('image/alert.png', is_unicode=True, width = 50)
     elif situation == 'domino':
         return climage.convert('image/dominopiece.png', is_unicode=True, width = 80)
