@@ -6,13 +6,13 @@ def IMAGE(situation):
     elif situation == 'domino':
         return climage.convert('image/dominopiece.png', is_unicode=True, width = 80)
     elif situation == 'error':
-        return climage.convert('image/error.png', is_unicode=True, width = 40)
+        return climage.convert('image/error.png', is_unicode=True, width = 30)
     elif situation == 'gameover':
         return climage.convert('image/gameover.jpg', is_unicode=True, width = 100)
     elif situation == 'happy':
         return climage.convert('image/happyface.jpg', is_unicode=True, width = 80)
     elif situation == 'insper':
-        return climage.convert('image/insperblack.png', is_unicode=True, width = 60)
+        return climage.convert('image/insperblack.png', is_unicode=True, width = 80)
     elif situation == 'question':
         return climage.convert('image/questionmark.png', is_unicode=True, width = 30)
     elif situation == 'sad':
