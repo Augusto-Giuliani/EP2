@@ -3,7 +3,7 @@ import random as r
 
 def QUOTE(situation,username):
     if situation == 'invalid':
-        l = ['\nRESPOSTA INVÁLIDA! PRESTA ATENÇÃO {}!'.format(username.upper()), '\nO que você digitou não faz sentido. Leia novamente {}'.format(username.upper()),'\nEstá nervoso(a) {}? Sentindo a pressão? Leia direito por gentileza.'.format(username.upper())]
+        l = ['\nRESPOSTA INVÁLIDA! PRESTA ATENÇÃO {}!'.format(username.upper()), '\nO que você digitou não faz sentido. Leia novamente {}.'.format(username.upper()),'\nEstá nervoso(a) {}? Sentindo a pressão? Leia direito por gentileza.'.format(username.upper())]
         return r.choice(l)
     elif situation == 'almost_there':
         l = ['\nFalta pouco {}! Não desista...'.format(username),'\nA vitória está perto {}! Tenha paciência.'.format(username),'\nSua mão está quase vazia {}! Vamos lá!'.format(username)]
