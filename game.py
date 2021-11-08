@@ -48,7 +48,7 @@ while GAME:
     for p in range(1,n):
         d_names[p] = l_names[director]
         director+=1
-    print('\nSeus oponente(s) são:')
+    print('\nSeus oponentes são:')
     for name in d_names.values():
         print(name)
 # Um dos jogadores é aleatoriamente escolhido para iniciar o jogo
