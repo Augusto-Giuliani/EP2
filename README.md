@@ -5,6 +5,7 @@ Aluno: Augusto Giuliani
 
 OBJETIVO: implementação de um jogo de dominó, seguindo as instruções dadas.
 
-NOTE: Para visualizar as imagens e ouvir a música, instale climage e pygame.
+NOTE: Para visualizar as imagens e ouvir a música, instale climage e pygame. E para jogar, rode o arquivo game.py.
+
 
 

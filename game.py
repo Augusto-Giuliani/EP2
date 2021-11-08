@@ -3,8 +3,7 @@
 # Importando as funções obrigatórias
 from mandatory_functions import cria_pecas,inicia_jogo,verifica_ganhador,soma_pecas,posicoes_possiveis,adiciona_na_mesa
 # Importando funções extras
-from spectacle import IMAGE
-from quotes import QUOTE
+from extra_functions import QUOTE,IMAGE,NAMES
 # Importando e inicializando pygame para tocar música
 import pygame as py
 py.init()
@@ -42,6 +41,16 @@ while GAME:
     players = d_game['jogadores'] # --> NOTE: O usuário é o jogador "0" desse dicionário
     table = d_game['mesa']
     storage = d_game['monte']
+# Dando aos adversários do dicionário players com nomes
+    l_names = NAMES(n-1)
+    d_names = dict()
+    director = 0
+    for p in range(1,n):
+        d_names[p] = l_names[director]
+        director+=1
+    print('\nSeus oponente(s) são:')
+    for name in d_names.values():
+        print(name)
 # Um dos jogadores é aleatoriamente escolhido para iniciar o jogo
     player = r.randint(0,n-1)
 # Criando variáveis
@@ -61,9 +70,6 @@ while GAME:
         # Mostrando as peças sobre a mesa, as peças do usuário, a quantidade de peças no monte e a quantidade de peças do(s) outro(s) jogador(es)
             print('\nMESA:\n{}'.format(table))
             if player==0: # só mostra se for a vez do usuário (não ficar repetitivo)
-                print('\nSuas peças:')
-                for piece in players[0]:
-                    print(piece)
                 if len(players[0])<=2: # --> mensagem se estiver faltando poucas peças para ganhar o jogo
                     print(QUOTE('almost_there', username))
                 print('\nQuantidade de peças...')
@@ -72,7 +78,10 @@ while GAME:
                 for i in range(1,n):
                     if len(players[i])<=2 and i not in alert: # --> não ficar adicionando os mesmos jogadores
                         alert.append(i)
-                    print('do JOGADOR {}: {}'.format(i,len(players[i])))
+                    print('do {}: {}'.format(d_names[i],len(players[i])))
+                print('\nSuas peças:')
+                for piece in players[0]:
+                    print(piece)
         # Quando for a vez do usuário, dá um aviso se algum jogador estiver com menos de 3 peças
             if alert!=list() and player==0:
                 if ALERT==0:
@@ -82,7 +91,7 @@ while GAME:
                 print(IMAGE('alert'))
                 print('\nCUIDADO {}! Os seguintes jogadores estão com menos de 3 peças:'.format(username.upper()))
                 for i in alert:
-                    print('JOGADOR {}'.format(i))
+                    print('{}'.format(d_names[i]))
         # Verificando as peças possíveis (que podem ser colocadas na mesa) do jogador
             possibilities = posicoes_possiveis(table,players[player])
         # ----> SE NÃO HOUVER PEÇAS POSSÍVEIS
@@ -94,7 +103,7 @@ while GAME:
                     input('Aperte a tecla "Enter" para apanhar uma peça do monte.')
             # Se o jogador não for o usuário
                 elif player!=0:
-                    print('\nO JOGADOR {} se deu mal, vai ter que pegar do monte.'.format(player))
+                    print('\nO {} se deu mal, vai ter que pegar do monte.'.format(d_names[player]))
                 players[player].append(storage[0])
                 del storage[0] # --> apaga essa peça obtida do monte no monte
                 possibilities = posicoes_possiveis(table,players[player]) # --> novamente verifica as peças possíveis
@@ -103,7 +112,7 @@ while GAME:
                 if player==0:
                     input('\nUma pena {}. Como não há peças no monte, vamos ter que pular a sua vez.\nAperte a tecla "Enter" para continuar o jogo.'.format(username))
                 elif player!=0:
-                    print('\nComo não tem monte, vamos pular a vez do JOGADOR {}.'.format(player))
+                    print('\nComo não tem monte, vamos pular a vez do {}.'.format(d_names[player]))
                 player+=1
                 skips+=1
         # ----> SE HOUVER PEÇAS POSSÍVEIS
@@ -126,7 +135,7 @@ while GAME:
                     del players[player][chosen_piece] # --> apaga essa peça da lista de peças que o jogador possui
             # Se o jogador não for o usuário
                 if player!=0:
-                    print('\nÉ a vez do JOGADOR {}.'.format(player))
+                    print('\nÉ a vez do {}.'.format(d_names[player]))
                     chosen_piece = r.choice(possibilities)
                     table = adiciona_na_mesa(players[player][chosen_piece],table)
                     del players[player][chosen_piece] # --> apaga essa peça da lista de peças que o jogador possui
@@ -150,7 +159,7 @@ while GAME:
                     for P in players[p]:
                         print (P)
                 else:
-                    print('\nPeças do JOGADOR {}:'.format(p))
+                    print('\nPeças do {}:'.format(d_names[p]))
                     for P in players[p]:
                         print (P)
             ROUND = False
@@ -179,7 +188,7 @@ while GAME:
                         L_winners.append(p)
                     print('\nEMPATE! E você é um dos vencedores, junto com o(s) jogador(es):')
                     for p in L_winners:
-                        print('JOGADOR {}'.format(p))
+                        print('{}'.format(d_names[p]))
                     print('\nParabéns! Mas será se dá para fazer melhor {}?'.format(username))
                 else:
                     L_winners = list()
@@ -187,7 +196,7 @@ while GAME:
                         L_winners.append(p)
                     print('\nEMPATE! Mas infelizmente você não é um dos vencedores. Os jogadores vencedores são:')
                     for p in L_winners:
-                        print('JOGADOR {}'.format(p))
+                        print('{}'.format(d_names[p]))
                     print('\nSerá se dá para fazer melhor {}?'.format(username))
     # Mensagem de vitória/perda
     if winner==0 and not DRAW:
@@ -199,7 +208,7 @@ while GAME:
         py.mixer.music.load('sound/sadsong.mp3') # --> carregando a música triste
         py.mixer.music.play(loops=-1)
         print(IMAGE('sad'))
-        print('\nVish {}... O JOGADOR {} ganhou. Talvez na próxima você ganhe.\n'.format(username,winner))
+        print('\nVish {}... O {} ganhou. Talvez na próxima você ganhe.\n'.format(username,d_names[winner]))
     # Pergunta se o usuário quer jogar novamente
     print(IMAGE('question'))
     again = input('\nVamos jogar de novo {}? Digite S para SIM e N para NÃO:\n'.format(username))
